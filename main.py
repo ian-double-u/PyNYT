@@ -1,5 +1,13 @@
 # PyNYT # ian-double-u #
 
+import requests
+import json
+
+class Table():
+    def __init__(self,columns,data):
+        self.columns = []
+        self.data = []
+
 class PyNYT():
     def __init__(self,api_key):
         self.api_key = api_key
@@ -28,16 +36,47 @@ class PyNYT():
         print('Popular articles on NYTimes.com')
     
     # Search for movie reviews #
-    def movies(self):
-        # TODO
-        endpoint_base = 'https://api.nytimes.com/svc/movies/v2'
+    def movies(self,critic=False,review=False,table_friendly=False,
+               critic_search='all'):
         
-        # might need more than one function for movies
-        # like one for critics
-        # one for reviews, etc.
-        # or maybe look into subclasses
+        base = 'https://api.nytimes.com/svc/movies/v2'
+        summit = 'api-key=' + self.api_key
+
+        def movies_critic(self,critic_search,table_friendly):
+            url = base + '/critics/' + critic_search + '.json?' + summit
+            
+            result = requests.get(url)
+            result = json.load(result.text)
+
+            if table_friendly:
+                table_data = []
+                
+                
+                return Table(columns=['display_name',
+                                      'sort_name',
+                                      'status',
+                                      'bio',
+                                      'sea_name',
+                                      'multimedia'],data=table_data)
+            
+            else:
+                return result
         
-    
+        def movies_review(self):
+            pass
+        
+        if critic:
+            movies_critic(self=self,critic_search=critic_search,
+                          table_friendly=table_friendly)
+            return
+        elif review:
+            movies_review(table_friendly)
+            return
+        else:
+            return
+        
+        # - - - 
+        
     # NYT RSS section feeds #
     def rss(self):
         print('NYT RSS section feeds')
